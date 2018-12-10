@@ -1,28 +1,33 @@
 package image;
 
-public class PaletteRasterImage implements Image {
+import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PaletteRasterImage extends RasterImage implements Image {
     List<Color> palette;
-    private int width;
-    private int height;
     private int[][] indexOfColors;
 
     public PaletteRasterImage(Color color, int width, int height) {
-        this.width = width;
-        this.height = height;
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < height; j++)
-                this.setPixelColor(color, i, j);
+        super(width,height);
+        this.createRepresentation();
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
+                setPixelColor(color, i, j);
+            }
+        }
     }
-
     public PaletteRasterImage(Color[][] pixels) {
-        this.width = pixels.length;
-        this.height = pixels[0].length;
+        super(pixels.length,pixels[0].length);
+        this.createRepresentation();
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++)
                 this.setPixelColor(pixels[i][j], i, j);
     }
 
     public void createRepresentation() {
+        palette = new ArrayList<Color>() ;
         indexOfColors = new int[width][height];
     }
 
@@ -33,31 +38,26 @@ public class PaletteRasterImage implements Image {
     }
 
     public Color getPixelColor(int x, int y) {
-        /* probleme de type a corriger*/
-        return indexOfColors[x][y];
+        return palette.get(indexOfColors[x][y]);
     }
 
     public void setPixelsColor(Color[][] pixels) {
-        indexOfColors[][] = pixels;
+        if(pixels.length!=width || pixels[0].length!=height)
+            throw new ArithmeticException("La taille des tableaux ne correpondent pas");
+        for(int i=0 ; i < width ; i++) {
+            for (int j = 0; j < height; j++) {
+                this.setPixelColor( pixels[i][j],i,j);
+            }
+        }
     }
 
     private void setPixelsColor(Color color) {
-        indexOfColors=color;
+        for(int i=0 ; i < width ; i++) {
+            for (int j = 0; j < height; j++) {
+                this.setPixelColor( color,i,j);
+            }
+        }
     }
 
-    public int getWidth() {
-        return this.width;
-    }
 
-    public int getHeight() {
-        return this.height;
-    }
-
-    protected void setWidth(int width) {
-        this.width = width;
-    }
-
-    protected void setHeight(int height) {
-        this.height = height;
-    }
 }

@@ -3,26 +3,26 @@ package image;
 
 import javafx.scene.paint.Color;
 
-public class BruteRasterImage implements Image {
+public class BruteRasterImage extends RasterImage implements Image  {
     private Color[][] pixels;
-    private int width;
-    private int height;
 
 
     public BruteRasterImage(Color color, int width, int height) {
-        this.width = width;
-        this.height = height;
+        super(width, height);
         pixels = new Color[width][height];
-        for(int i=0;i<width;i++)
-            for(int j=0; j<height;j++)
-                pixels[i][j]= color;
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
+                pixels[i][j] = color;
+            }
+        }
     }
 
     public BruteRasterImage(Color[][] pixels) {
+        super(pixels.length,pixels[0].length);
         this.pixels = pixels;
-        this.width = pixels.length;
-        this.height = pixels[0].length;
-
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                this.pixels[i][j]=pixels[i][j];
     }
 
     //alloue la matrice représentant l’image.
@@ -44,7 +44,7 @@ public class BruteRasterImage implements Image {
     private void setPixelsColor(Color[][] pixels) {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
-                pixels[i][j] = pixels[i][j]; //erreur revoir
+                pixels[i][j] = pixels[i][j];
             }
         }
     }
@@ -54,23 +54,4 @@ public class BruteRasterImage implements Image {
         this.pixels[this.width][this.height] = color;
     }
 
-    // retourne la largeur de l’image.
-    public int getWidth() {
-        return this.width;
-    }
-
-    // retourne la hauteur de l’image.
-    public int getHeight() {
-        return this.height;
-    }
-
-    // fixe la largeur de l’image.
-    protected void setWidth(int width) {
-        this.width = width;
-    }
-
-    //fixe la hauteur de l’image.
-    protected void setHeight(int height) {
-        this.height = height;
-    }
 }

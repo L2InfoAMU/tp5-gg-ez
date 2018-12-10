@@ -1,5 +1,7 @@
 package image;
 
 public enum RasterImageType {
-    BRUTE;
+    BRUTE,
+    SPARSE,
+    PALETTE;
 }
